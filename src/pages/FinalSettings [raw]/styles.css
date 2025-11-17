@@ -1,0 +1,73 @@
+.container-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  flex-direction: row;
+  gap: 20px;
+  font-size: 1em;
+
+}
+
+.outer-form {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.outer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  gap: 20px;
+}
+
+.settings-form, .order {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.text-input {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+}
+
+.error {
+  color: red;
+}
+
+.ok {
+  color: green;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  flex: 1
+}
+
+.optionPoints {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.container-form-points {
+  flex-direction: column;
+}
