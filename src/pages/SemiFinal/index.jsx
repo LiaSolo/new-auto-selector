@@ -3,7 +3,7 @@ import Faculty from "../../components/Faculty";
 import {allFacs, back, socketUrl} from "../../config";
 import {HotKeys} from "react-hotkeys";
 import {useEffect, useRef, useState} from "react";
-import FacultyWinner from "../../components/FacultyWinner [raw]";
+//import FacultyWinner from "../../components/FacultyWinner [raw]";
 //import axios from "axios";
 //import useWebSocket from "react-use-websocket";
 import {Link} from "react-router-dom";
@@ -14,7 +14,7 @@ import useWebSocket from "react-use-websocket";
 // };
 
 export default function SemiFinal() {
-    const inputRef = useRef()
+    //const inputRef = useRef()
     // const [currFac, setFac] = useState(1000);
     // const [counter, setCounter] = useState(0);
     // const [state, setState] = useState({all: [], winners: [], iterator: undefined, winnersList: []});
