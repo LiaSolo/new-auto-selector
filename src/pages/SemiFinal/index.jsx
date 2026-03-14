@@ -1,97 +1,79 @@
-import './styles.css';
+import '../../scss/mainPage.scss';
 import Faculty from "../../components/Faculty";
 import {allFacs, back, socketUrl} from "../../config";
-import {HotKeys} from "react-hotkeys";
-import {useEffect, useRef, useState} from "react";
-//import FacultyWinner from "../../components/FacultyWinner [raw]";
-//import axios from "axios";
-//import useWebSocket from "react-use-websocket";
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
 import useWebSocket from "react-use-websocket";
-
-// const keyMap = {
-//     NEXT: "d"
-// };
+import { getData, getRelease } from '../../services/api';
+;
 
 export default function SemiFinal() {
-    //const inputRef = useRef()
-    // const [currFac, setFac] = useState(1000);
-    // const [counter, setCounter] = useState(0);
-    // const [state, setState] = useState({all: [], winners: [], iterator: undefined, winnersList: []});
+    const [released, setReleased] = useState([]);
+    //const [loading, setLoading] = useState(true);
+    const [semi, setSemi] = useState(null);
 
-    // const [participants, setParticipants] = useState([]);
-    // const [winners, setWinners] = useState([]);
-    // const [released, setReleased] = useState(new Set());
-    const [semi, setSemi] = useState({ participants: [], winners: [], released: [] });
+    // const fetchData = (rawData) => {
+    //     setReleased(rawData.released)
+    //     //setLoading(false)
+    // }
     
     useEffect(() => {
-        fetch(`${back}/semi`).then(r => r.json()).then(setSemi);
+        getData(setSemi);
+        getRelease((data) => setReleased(data.released))
     }, []);
-    console.log(semi)
+
     // useEffect(() => {
-    //     axios.get(`${back}/api/faculty`)
-    //         .then(res => {
-    //             setState(prev => ({...prev, all: res.data}))
-    //         }).catch(error => {
-    //         console.log(error)
-    //     })
-    //     axios.get(`${back}/api/winners`)
-    //         .then(res => {
-    //             setState(prev => ({
-    //                 ...prev,
-    //                 winners: res.data,
-    //                 iterator: res.data.values(),
-    //                 winnersList: [...Array(res.data.length).fill(undefined)]
-    //             }))
-    //         }).catch(error => {
-    //         console.log(error)
-    //     })
+    //     console.log('semi', semi)
+    // }, [semi]);
 
-    //     inputRef.current.focus();
-    // }, [])
+    // useEffect(() => {
+    //     console.log('released', released)
 
-    const { sendMessage } = useWebSocket(socketUrl);
+    // }, [released]);
+
+    const { lastJsonMessage } = useWebSocket('ws://localhost:3003', {
+        onOpen: () => console.log('Соединение установлено'),
+        shouldReconnect: () => true,
+    });
+
+    // Ловим следующего показанного финалиста
+    useEffect(() => {
+        if (lastJsonMessage && lastJsonMessage.type === 'data-updated') {
+        setReleased(lastJsonMessage.data.released)
+        }
+    }, [lastJsonMessage]);
 
 
     return (
-            <div className="App" style={{
-                backgroundImage: 'url(./assets/background.png)'
-            }}>
-                <div className="line">
-                    <div className="container">
-                        <div className="right">
-                            <div className="video" style={{
-                                backgroundImage: 'url(./assets/Logo.png)'
-                            }} />
-                            <div className="FacultyList">
-                                {
-                                    semi.participants.map((faculty) =>
-                                        <Faculty key={faculty} className={semi.released.includes(faculty) ? "participant_released" : ""} facultyInfo={allFacs[faculty]}/>
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div className="left">
-                            <p className="title">Финалисты</p>
-                            <Link to="/semi-settings" />
-                            <div className="winnersList">
-                                {
-                                    semi.released.map((faculty) =>{
-                                        const isReleased = semi.released.includes(faculty)
-                                        //<FacultyWinner key={index} params={allFacs[faculty]}/>
-                                    // победитель (драфт) // isWinner && !isReleased || className="winnerDraft"
-                                    // победитель + выведен // isWinner && isReleased || className="winnerReleased"
-                                        return <>
-                                                {/* <FacultyWinner key={faculty} params={allFacs[faculty]}/> */}
-                                                <Faculty key={faculty} className={isReleased ? "winner_released" : "draft"} facultyInfo={isReleased ? allFacs[faculty] : null}/>
-                                                </>
-                                     }
-                                    )
-                                    }
-                            </div>
-                        </div>
+            <div className="App">
+                <div className="right">
+                    <div className="video"/>
+                    <div className="FacultyList">
+                        {
+                            semi && semi.parts.map((fac) =>
+                                <Faculty 
+                                    key={fac} 
+                                    className={released.includes(fac) ? 'lowOpacity' : ''} 
+                                    facultyInfo={allFacs[fac]}
+                                />
+                            )
+                        }
                     </div>
                 </div>
+                    <div className="winnersList">
+                        <h1>Финалисты</h1>
+                        {
+                            semi && semi.queue.map((fac) => {
+                                const isReleased = released.includes(fac);
+                                return (
+                                    <Faculty 
+                                        key={fac} 
+                                        className={isReleased ? "winnerReleased" : "lowOpacity"} 
+                                        facultyInfo={isReleased && allFacs[fac]}
+                                    />
+                                )
+                            })
+                        }
+                    </div>
             </div>
 
 

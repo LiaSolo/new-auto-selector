@@ -1,74 +1,103 @@
-// server.js
-//import { create, router, defaults, bodyParser } from 'json-server';
-import { createServer } from 'http';
+import express from 'express';
+import fs from 'fs';
+import http from 'http';
 import { WebSocketServer } from 'ws';
-import { watch } from 'chokidar';
-import jsonServer from 'json-server';
+import cors from 'cors';
 
-const app = jsonServer.create();
-const myRouter = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
-app.use(middlewares);
-app.use(jsonServer.bodyParser);
 
-// app.use(middlewares);
-// app.use(bodyParser);
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
 
-// Важно: вешаем перехват до myRouter, чтобы сработал res.on('finish')
-app.use((req, res, next) => {
-  res.on('finish', () => {
-    const methodChanged = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
-    if (!methodChanged) return;
+app.use(cors());
+app.use(express.json());
 
-    // Шлем только при изменениях ресурса "semi" (уточните под свой путь)
-    if (/\/api\/semi(\/|$|\?)/.test(req.originalUrl || req.url)) {
-      broadcastSemi();
+
+app.get('/api/:type', (req, res) => {
+    const { type } = req.params;
+
+    try {
+        const data = JSON.parse(fs.readFileSync(`./json/${type}.json`, 'utf8'));
+        res.json(data);
+    } catch (error) {
+        res.json({ 
+            status: 'error', 
+            message: error.message,
+        });
     }
-  });
-  next();
 });
 
-// REST-роутер на /api
-app.use('/api', myRouter);
+app.post('/api/:type', (req, res) => {
+    const { type } = req.params;
 
-const server = createServer(app);
-
-// WebSocket на /ws
-const wss = new WebSocketServer({ server, path: '/ws' });
-
-function send(ws, type, payload) {
-  try { ws.send(JSON.stringify({ type, payload })); } catch {}
-}
-
-function broadcast(type, payload) {
-  const msg = JSON.stringify({ type, payload });
-  for (const client of wss.clients) {
-    if (client.readyState === 1) client.send(msg);
-  }
-}
-
-function getSemi() {
-  // Если semi — объект в корне db.json
-  const state = myRouter.db.getState();
-  return state.semi; // адаптируйте под вашу структуру
-}
-
-function broadcastSemi() {
-  broadcast('snapshot', getSemi());
-}
-
-wss.on('connection', (ws) => {
-  // При подключении отдаем текущее состояние
-  send(ws, 'snapshot', getSemi());
+    try {
+        const newData = req.body;
+        fs.writeFileSync(`./json/${type}.json`, JSON.stringify(newData, null, 2), 'utf8');
+        
+        if (type === 'release') {
+            wss.clients.forEach(client => {
+                if (client.readyState === 1) {
+                    client.send(JSON.stringify({ 
+                        type: 'data-updated', 
+                        data: newData 
+                    }));
+                }
+            });
+        }
+    
+        res.json({ status: 'ok' });
+      } catch (error) {
+          res.json({ 
+              status: 'error', 
+              message: error.message,
+          });
+      }
 });
 
-// Если db.json меняют руками — тоже шлем обновление
-watch('db.json', { ignoreInitial: true }).on('change', () => {
-  broadcastSemi();
-});
+// app.get('/api/settings', (req, res) => {
+//   const data = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+//   res.json(data);
+// });
 
-const PORT = 3003 //process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`REST  http://localhost:${PORT}/api`);
-  console.log(`WS    ws://localhost:${PORT}/ws`);
+// app.post('/api/settings', (req, res) => {
+//   const newData = req.body;
+//   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(newData, null, 2), 'utf8');  
+//   res.json({ status: 'ok' });
+// });
+
+// app.get('/api/data', (req, res) => {
+//   const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+//   res.json(data);
+// });
+
+// app.post('/api/data', (req, res) => {
+//   const newData = req.body;
+//   fs.writeFileSync(DATA_FILE, JSON.stringify(newData, null, 2), 'utf8');
+//   res.json({ status: 'ok' });
+// });
+
+// app.get('/api/release', (req, res) => {
+//   const data = JSON.parse(fs.readFileSync(RELEASE_FILE, 'utf8'));
+//   res.json(data);
+// });
+
+// app.post('/api/release', (req, res) => {
+//   const newData = req.body;
+//   fs.writeFileSync(RELEASE_FILE, JSON.stringify(newData, null, 2), 'utf8');
+  
+//   // Уведомляем всех WebSocket клиентов
+//   wss.clients.forEach(client => {
+//     if (client.readyState === 1) {
+//       client.send(JSON.stringify({ 
+//         type: 'data-updated', 
+//         data: newData 
+//       }));
+//     }
+//   });
+  
+//   res.json({ status: 'ok' });
+// });
+
+server.listen(3003, () => {
+  console.log('Сервер запущен на порту 3003');
 });

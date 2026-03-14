@@ -1,0 +1,69 @@
+.faculty {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 268px;
+    height: 50px;
+    border-radius: 16px;
+
+    font-size: 16px;
+    line-height: 1;    
+    color: black;
+    
+    transition: .5s linear all;    
+    background: rgba(255, 255, 255, 0.8);    
+}
+
+.lowOpacity {
+    opacity: 0.5;
+}
+
+.winnersList .faculty,
+.FacultyPointList .faculty {
+    height: 66px;
+    width: 400px;
+    font-family: 'Avenir-Bold';
+    font-size: 28px;
+    background: rgba(255, 255, 255, 1);
+}
+
+.FacultyPointList .faculty {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.FacultyPointList .allPoints {
+    background: rgba(255, 255, 255, 1);
+}
+
+.points {
+    font-family: 'Avenir-Heavy';
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+img {
+    height: 100%;
+}
+
+.gradient{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: gradientAnimatian forwards 2s;
+}
+
+@keyframes gradientAnimatian {
+    0% {
+        width: 0;
+        opacity: 1;
+    }
+    50% {
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'Avenir-Demi';
+	src: url('./avenirnextcyr-demi.eot'); /* IE 9 Compatibility Mode */
+	src: url('./avenirnextcyr-demi.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('./avenirnextcyr-demi.woff2') format('woff2'), /* Super Modern Browsers */
+		url('./avenirnextcyr-demi.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('./avenirnextcyr-demi.css') format('truetype'), /* Safari, Android, iOS */
+		url('./avenirnextcyr-demi.svg#avenirnextcyr-demi') format('svg'); /* Chrome < 4, Legacy iOS */
+}

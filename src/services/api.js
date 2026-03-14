@@ -1,0 +1,227 @@
+const API_URL = 'http://localhost:3003/api/'
+
+
+async function get(path, setData) {
+    await fetch(`${API_URL}${path}`)
+        .then(res => res.json())
+        .then(data => setData(data));
+}
+
+async function save(path, data) {
+    const response = await fetch(`${API_URL}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+
+    return response.json();
+};
+
+
+
+export async function getSettings(setSettings) {
+    await get('settings', setSettings)
+}
+
+export async function getRelease(setRelease) {
+    await get('release', setRelease)
+};
+
+export async function getData(setData) {
+    await get('data', setData)
+};
+
+
+
+export async function saveData(newData) {
+  await save('data', newData)
+}
+
+export async function saveSettings(newSettings) {
+  await save('settings', newSettings)
+}
+
+export async function saveRelease(newRelease) {
+  await save('release', newRelease)
+}
+
+// export async function getSettings(settings, setSettings) {
+//     await fetch(SETTINGS_URL)
+//     .then(res => res.json())
+//     .then(data => setSettings({...settings, ...data}));
+// };
+
+// export async function saveSettings(data) {
+//     console.log(data)
+//     const response = await fetch(SETTINGS_URL, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data)
+//     });
+
+//     return response.json();
+// };
+
+// export async function getData(setData) {
+//   console.log(555)
+//     await fetch(DATA_URL)
+//     .then(res => res.json())
+//     .then(data => setData(data));
+// };
+
+// export async function saveData(data) {
+//     const response = await fetch(DATA_URL, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data)
+//     });
+
+//     return response.json();
+// };
+
+// export async function getData(path = 'data', setData) {
+//     await fetch(`${API_URL}${path}`)
+//     .then(res => res.json())
+//     .then(data => setData(data));
+// };
+
+// export async function saveData(path = 'data', data) {
+//     const response = await fetch(`${API_URL}${path}`, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data)
+//     });
+
+//     return response.json();
+// };
+
+// export async function getRelease(setData) {
+//     await fetch(RELEASE_URL)
+//     .then(res => res.json())
+//     .then(data => setData(data));
+// };
+
+// export async function saveRelease(data) {
+//     const response = await fetch(RELEASE_URL, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data)
+//     });
+
+//     return response.json();
+// };
+
+
+// WebSocket для realtime (дети слушают обновления)
+export class WebSocketService {
+  constructor(url = 'ws://localhost:3003') {
+    this.url = url;
+    this.ws = null;
+    this.listeners = new Map();
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+  }
+  
+  // Подключиться к серверу
+  connect() {
+    try {
+      this.ws = new WebSocket(this.url);
+      
+      this.ws.onopen = () => {
+        this.reconnectAttempts = 0;
+        this.emit('connected');
+      };
+      
+      this.ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          console.log('Получено сообщение:', message);
+          this.emit('message', message);
+          this.emit(message.type, message.data);
+        } catch (e) {
+          console.log('Получено сообщение:', event.data, e);
+        }
+      };
+      
+      // this.ws.onclose = () => {
+      //   this.emit('disconnected');
+      //   this.reconnect();
+      // };
+      
+      // this.ws.onerror = (error) => {
+      //   console.error('WebSocket ошибка:', error);
+      //   this.emit('error', error);
+      // };
+    } catch (error) {
+      console.error('Ошибка подключения:', error);
+    }
+  }
+  
+  // Переподключение
+  // reconnect() {
+  //   if (this.reconnectAttempts < this.maxReconnectAttempts) {
+  //     this.reconnectAttempts++;
+  //     console.log(`🔄 Попытка переподключения ${this.reconnectAttempts}/${this.maxReconnectAttempts}...`);
+  //     setTimeout(() => this.connect(), 3000);
+  //   }
+  // }
+  
+  // Отправить сообщение на сервер
+  send(type, data = {}) {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({ type, ...data });
+      this.ws.send(message);
+      console.log('📤 Отправлено:', message);
+    } else {
+      console.warn('WebSocket не подключен, сообщение не отправлено');
+    }
+  }
+  
+  // Подписаться на событие
+  on(event, callback) {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, []);
+    }
+    this.listeners.get(event).push(callback);
+    
+    // Возвращаем функцию отписки
+    return () => this.off(event, callback);
+  }
+  
+  // Отписаться от события
+  off(event, callback) {
+    if (this.listeners.has(event)) {
+      const callbacks = this.listeners.get(event).filter(cb => cb !== callback);
+      this.listeners.set(event, callbacks);
+    }
+  }
+  
+  // Вызвать события
+  emit(event, data) {
+    if (this.listeners.has(event)) {
+      this.listeners.get(event).forEach(callback => {
+        try {
+          callback(data);
+        } catch (e) {
+          console.error(`Ошибка в обработчике ${event}:`, e);
+        }
+      });
+    }
+  }
+  
+  // Отключиться
+  disconnect() {
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+  }
+  
+  // Статус подключения
+  isConnected() {
+    return this.ws && this.ws.readyState === WebSocket.OPEN;
+  }
+}
+
+// Создаем единственный экземпляр для всего приложения
+export const wsService = new WebSocketService();

@@ -1,0 +1,13 @@
+.radioButton {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.radioButton input[type=radio] {
+  margin: 0;
+  accent-color: $blue;
+  cursor: pointer;
+}

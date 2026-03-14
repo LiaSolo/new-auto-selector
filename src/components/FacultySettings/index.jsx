@@ -1,55 +1,77 @@
-import { useState } from 'react';
+import cn from 'classnames';
 import Toggle from '../Toggle';
-import './styles.css';
+import './styles.scss';
+import ScoreInput from '../ScoreInput';
+import RadioButton from '../radioButton';
 
-export default function FacultySettings(
-    facultyName, 
-    isParticipant = true, 
-    whichSemi = 1, 
-    isFinal = false,
-    scoreJudge = 0,
-    scoreAudience = 0,
-) {
-    const [curToggleOption, setCurToggleOption] = useState(whichSemi === 1)
-    const [curJudgeScore, setCurJudgeScore] = useState(scoreJudge);
-    const [curAudienceScore, setCurAudienceScore] = useState(scoreAudience);
-    const [curIsParticipant, setCurIsParticipant] = useState(isParticipant);
-    const [curIsFinal, setCurIsFinal] = useState(isFinal);
+// showOption 1 <=> curToggleOption
+// showOption 2 <=> !curToggleOption
+// showOption 3 <=> curIsFinal
+
+
+export default function FacultySettings({
+    id,
+    name,
+    isLastWinner,
+    setLastWinner,
+    serverData: { semi, isFinal, isParticipant, scoreJudge, scoreAudience },
+    serverUpdate,
+    showOption = 0,
+}
+) { 
+    const finalist = isLastWinner || isFinal;
+    const isDisplay = (showOption === 0 
+        || (!isLastWinner && showOption === semi && isParticipant) 
+        || (showOption === 3 && finalist && isParticipant)
+    )
 
     return (
-        <div className='row'>
-            <input 
-                type='checkbox' 
-                checked={curIsParticipant}
-                onChange={(e) => setCurIsParticipant(e.target.checked)}
-            />
-            <div className='baseContainer'>{facultyName}</div>
-
-            {curIsParticipant && 
-                <>
-                    <Toggle 
-                        curOption={curToggleOption} 
-                        setCurOption={setCurToggleOption} 
-                        option1='1пф' 
-                        option2='2пф'
-                    />
+        
+                <div className={cn('row', !isDisplay && 'noDisplay')} data-id={id}>
                     <input 
                         type='checkbox' 
-                        checked={curIsFinal}
-                        onChange={(e) => setCurIsFinal(e.target.checked)}
+                        checked={isParticipant}
+                        onChange={(e) => serverUpdate({isParticipant: e.target.checked})}
                     />
+                    <div className={cn('nameContainer', !isParticipant && 'disabled')}>{name}</div>
 
-                    {curIsFinal && 
-                        <div className='finalSettings'>
-                            <input type='number' onChange={(e) => setCurJudgeScore(e.target.value)}>{curJudgeScore}</input>
-                            <input type='number' onChange={(e) => setCurAudienceScore(e.target.value)}>{curAudienceScore}</input>
-                        </div>
+                    {isParticipant && 
+                        <>
+                            <RadioButton
+                                isSelected={isLastWinner} 
+                                onChange={setLastWinner}
+                            />
+                            <Toggle 
+                                curOption={semi === 1} 
+                                setCurOption={(newValue) => serverUpdate({semi: newValue ? 1 : 2})} 
+                                option1='1пф' 
+                                option2='2пф'
+                                className={isLastWinner && "hidden"}
+                            />
+                            <input 
+                                type='checkbox' 
+                                checked={finalist}
+                                disabled={isLastWinner}
+                                onChange={(e) => serverUpdate({isFinal: e.target.checked})}
+                            />
+                            {finalist &&
+                                <>
+                                    <ScoreInput 
+                                        label="жюри" 
+                                        curScore={scoreJudge} 
+                                        setCurScore={(newValue) => serverUpdate({scoreJudge: newValue})} 
+                                    />
+                                    <ScoreInput 
+                                        label="зрители" 
+                                        curScore={scoreAudience} 
+                                        setCurScore={(newValue) => serverUpdate({scoreAudience: newValue})}
+                                    />
+                                </>
+                            }
+                        </> 
                     }
-                </> 
-            }
-            
-
-        </div>
+                </div>
+        
     )
 
 };

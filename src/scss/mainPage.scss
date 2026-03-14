@@ -1,0 +1,92 @@
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(./assets/background.png);
+  overflow: hidden;
+}
+
+.right {
+    @include baseColumn;
+    max-width: 60%;
+    gap: 50px;
+}
+
+.FacultyList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 820px;
+}
+
+.winnersList, .FacultyPointList {
+  @include baseColumn;
+  flex-wrap: wrap;
+  gap: 16px;
+  max-height: 620px;
+}
+
+.video {
+    background-image: url(./assets/Logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    width: 45vw;
+    aspect-ratio: 16 / 9;
+    margin: auto;
+}
+
+.addedPoints {
+  font-size: 66px;
+  font-family: 'Avenir-Bold';
+  color: white;
+  background-color: rgb(201, 18, 18);
+  width: 200px;
+  height: 130px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animatedPoints {
+    animation: animationPoints 0.5s linear;
+}
+
+@keyframes animationPoints {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+// .FacultyPointList {
+//   display: grid;
+//   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+//   grid-gap: 10px;
+//   grid-auto-flow: column;
+// }
+
+// .FacultyList {
+//     display: grid;
+//     grid-template-columns: auto auto auto;
+//     gap: 8px;
+// }
+
+
+
+
+

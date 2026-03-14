@@ -1,0 +1,222 @@
+{
+  "facs": {
+    "studs": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 99,
+      "scoreAudience": 10
+    },
+    "psych": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 80,
+      "scoreAudience": 20
+    },
+    "vostok": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "soc": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 60,
+      "scoreAudience": 50
+    },
+    "libarts": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "politfuck": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 70,
+      "scoreAudience": 60
+    },
+    "chem": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "fmo": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 40,
+      "scoreAudience": 100
+    },
+    "teo": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "hsm": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "inoz": {
+      "semi": 1,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "hist": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "philolog": {
+      "semi": 2,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "med": {
+      "semi": 2,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "pmpu": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "bio": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "kio": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "econ": {
+      "semi": 2,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "mm": {
+      "semi": 2,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "arts": {
+      "semi": 2,
+      "isFinal": true,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "sport": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "media": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "mkn": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "stomat": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "phys": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "philos": {
+      "semi": 2,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "law": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": true,
+      "scoreJudge": 90,
+      "scoreAudience": 6
+    },
+    "gimn": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "inyaz": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "irkiar": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    },
+    "college": {
+      "semi": 1,
+      "isFinal": false,
+      "isParticipant": false,
+      "scoreJudge": 0,
+      "scoreAudience": 0
+    }
+  },
+  "lastWinner": "law"
+}

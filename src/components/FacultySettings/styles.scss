@@ -1,0 +1,54 @@
+
+
+.row {
+    display: grid;
+    grid-template-columns: 60px 200px 60px 90px 60px 50px 50px;
+    gap: 16px;
+}
+
+.nameContainer {
+    @include baseContainer;
+    width: 200px;
+    cursor: grab;
+}
+
+.disabled {
+    opacity: 0.3;
+}
+
+// .hidden {
+//     visibility: hidden;
+// }
+
+.noDisplay {
+    display: none;
+}
+
+.row input[type=checkbox] {
+    width: 60px;
+    margin: 0;
+    accent-color: $light-green;
+    cursor: pointer;
+}
+
+.row input[type=checkbox]:disabled {
+    cursor: not-allowed;
+}
+
+/* Убираем стрелки у всех number input */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
+
+    padding: 4px 8px;
+    width: 50px;
+}
+
+.row .radioButton {
+    transform: scale(1.5);
+}

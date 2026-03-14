@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'AvenirNextCyr-Heavy';
+	src: url('../fonts/avenirnextcyr-heavy.eot'); /* IE 9 Compatibility Mode */
+	src: url('../fonts/avenirnextcyr-heavy.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('../fonts/avenirnextcyr-heavy.woff2') format('woff2'), /* Super Modern Browsers */
+		url('../fonts/avenirnextcyr-heavy.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('../fonts/avenirnextcyr-heavy.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('../fonts/avenirnextcyr-heavy.svg#avenirnextcyr-heavy') format('svg'); /* Chrome < 4, Legacy iOS */
+}

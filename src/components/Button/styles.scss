@@ -1,0 +1,42 @@
+.primary {
+    background-color: $dark-green;
+}
+
+.primary__light {
+    background-color: $light-green;
+}
+
+.secondary {
+    background-color: $blue;
+}
+
+.dangerous {
+    background-color: $dark-pink;
+}
+
+.pickme {
+    background-color: $light-pink;
+}
+
+button {
+    padding: 12px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: all 0.5s;
+    //font-size: 12px;
+}
+
+button:hover {
+    border-color: white;
+}
+
+button:active {
+    scale: 0.9;
+}
+
+button:disabled {
+    opacity: 0.5;
+    scale: 1;
+    border-color: transparent;
+    cursor: not-allowed;
+}
