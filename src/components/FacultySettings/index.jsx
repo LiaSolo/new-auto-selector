@@ -27,13 +27,13 @@ export default function FacultySettings({
 
     return (
         
-                <div className={cn('row', !isDisplay && 'noDisplay')} data-id={id}>
+                <div className={cn('row', !isDisplay ? 'noDisplay' : '')} data-id={id}>
                     <input 
                         type='checkbox' 
                         checked={isParticipant}
                         onChange={(e) => serverUpdate({isParticipant: e.target.checked})}
                     />
-                    <div className={cn('nameContainer', !isParticipant && 'disabled')}>{name}</div>
+                    <div className={cn('nameContainer', !isParticipant ? 'disabled' : '')}>{name}</div>
 
                     {isParticipant && 
                         <>

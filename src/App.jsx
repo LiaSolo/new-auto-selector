@@ -3,7 +3,7 @@ import {
     Routes,
     Route, BrowserRouter,
 } from "react-router-dom";
-import SemiFinal from "./pages/SemiFinal";
+import SemiFinal from "./pages/Semi";
 import Final from "./pages/Final";
 import Settings from "./pages/Settings";
 import Release from './pages/Release';

@@ -1,13 +1,13 @@
-import '../../scss/settingsPage.scss';
-import FacultySettings from '../../components/FacultySettings'
+import '../scss/settingsPage.scss';
+import FacultySettings from '../components/FacultySettings'
 import { useCallback, useEffect, useState, useRef } from 'react';
 import Sortable from 'sortablejs';
 import { Link } from 'react-router-dom';
-import RadioButton from '../../components/radioButton';
-import { allFacs } from '../../config';
-import { getSettings, saveData, saveRelease, saveSettings } from '../../services/api';
-import { settingsFormatter } from '../../services/settingsFormatter';
-import Button from '../../components/Button';
+import RadioButton from '../components/radioButton';
+import { allFacs } from '../config';
+import { getSettings, saveData, saveRelease, saveSettings } from '../services/api';
+import { settingsFormatter } from '../services/settingsFormatter';
+import Button from '../components/Button';
 
 const initSettings = {};
 Object.keys(allFacs).forEach((fac) => 

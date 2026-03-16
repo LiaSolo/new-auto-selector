@@ -30,6 +30,7 @@ export const settingsFormatter = (rawSettings, round) => {
 
     let queue = parts.filter(fac => facSettings[fac].isFinal)
     shuffleArray(queue)
+    console.log(queue)
 
     // final
     if (round === 3) {

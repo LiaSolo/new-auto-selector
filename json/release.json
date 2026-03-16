@@ -1,4 +1,16 @@
 {
-  "released": [],
-  "round": 3
+  "queue": [
+    "politfuck",
+    "fmo",
+    "soc",
+    "hsm",
+    "psych",
+    "studs"
+  ],
+  "released": [
+    "politfuck",
+    "fmo",
+    "soc"
+  ],
+  "round": 1
 }

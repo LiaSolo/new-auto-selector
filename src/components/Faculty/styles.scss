@@ -8,12 +8,13 @@
     height: 50px;
     border-radius: 16px;
 
-    font-size: 16px;
+    font-size: $normal;
     line-height: 1;    
-    color: black;
+    //color: black;
+    color: rgb(79, 9, 136);
     
     transition: .5s linear all;    
-    background: rgba(255, 255, 255, 0.8);    
+    background: rgba(242, 219, 255, 0.8);    
 }
 
 .lowOpacity {
@@ -25,16 +26,23 @@
     height: 66px;
     width: 400px;
     font-family: 'Avenir-Bold';
-    font-size: 28px;
-    background: rgba(255, 255, 255, 1);
+    font-size: $medium;
+    color: rgb(79, 9, 136);
+    background: rgb(242, 219, 255);
 }
 
 .FacultyPointList .faculty {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .FacultyPointList .allPoints {
-    background: rgba(255, 255, 255, 1);
+    background: rgb(227, 194, 247);
+}
+
+.released {
+    background: rgba(227, 194, 247, 1);
+    transition: all 1s;
+    transform: translateX(372px);
 }
 
 .points {

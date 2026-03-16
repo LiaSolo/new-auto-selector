@@ -20,6 +20,13 @@ export const allFacs = {
             'background': 'linear-gradient(74deg, rgb(255, 233, 60) 0%, rgb(255, 73, 18) 100%)'
         }
     },
+    media: {
+        name: "ВШЖиМК",
+        logo: "media.png",
+        styles: {
+            'background': 'linear-gradient(150deg, rgb(10, 0, 162) 0%, rgb(71, 186, 255) 100%)'
+        }
+    },
     hsm: {
         name: "ВШМ",
         logo: "hsm.png",
@@ -45,7 +52,7 @@ export const allFacs = {
         name: "ИРКиАР",
         logo: "irkiar.png",
         styles: {
-            'background': 'linear-gradient(67deg, rgb(0, 255, 63) 0%, rgb(255, 218, 0) 100%)'
+            'background': 'linear-gradient(67deg, rgb(0, 255, 63) 0%, rgb(255, 17, 0) 100%)'
         }
     },
     hist: {
@@ -62,18 +69,11 @@ export const allFacs = {
             'background': 'linear-gradient(146deg, rgb(255, 0, 181) 0%, rgb(206, 27, 255) 100%)'
         }
     },
-    media: {
-        name: "Журналистика",
-        logo: "media.png",
-        styles: {
-            'background': 'linear-gradient(150deg, rgb(10, 0, 162) 0%, rgb(71, 186, 255) 100%)'
-        }
-    },
     kio: {
         name: "КИО",
         logo: "kio.png",
         styles: {
-            'background': 'linear-gradient(144deg, rgb(255, 0, 0) 0%, rgb(110, 0, 140) 51%, rgb(136, 0, 255) 100%)'
+            'background': 'linear-gradient(144deg, rgb(255, 0, 0) 0%, rgb(222, 130, 184) 51%, rgb(136, 0, 255) 100%)'
         }
     },
     college: {
@@ -87,21 +87,21 @@ export const allFacs = {
         name: "МатМех",
         logo: "mm.png",
         styles: {
-            'background': 'linear-gradient(67deg, rgb(0, 125, 255) 0%, rgb(176, 71, 255) 100%)'
+            'background': 'linear-gradient(67deg, rgb(43, 145, 254) 0%, rgb(9, 7, 154) 100%)'
         }
     },
     med: {
         name: "Медицина",
         logo: "med.png",
         styles: {
-            'background': 'linear-gradient(146deg, rgb(0, 159, 255) 0%, rgb(255, 82, 167) 100%)'
+            'background': 'linear-gradient(146deg, rgb(0, 159, 255) 0%, rgb(209, 82, 255) 100%)'
         }
     },
     mkn: {
         name: "МКН",
         logo: "mkn.png",
         styles: {
-            'background': 'linear-gradient(98deg, rgb(0, 255, 85) 0%, rgb(71, 255, 228) 100%)'
+            'background': 'linear-gradient(98deg, rgb(63, 255, 127) 0%, rgb(71, 255, 252) 100%)'
         }
     },
     pmpu: {
@@ -136,7 +136,7 @@ export const allFacs = {
         name: "Социология",
         logo: "soc.png",
         styles: {
-            'background': 'linear-gradient(76deg, rgb(0, 255, 166) 0%, rgb(255, 125, 197) 100%)'
+            'background': 'linear-gradient(76deg, rgb(0, 213, 255) 0%, rgb(255, 125, 197) 100%)'
         }
     },
     stomat: {

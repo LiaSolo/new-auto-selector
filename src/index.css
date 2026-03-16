@@ -2,7 +2,7 @@
   font-family: 'Avenir-Medium';
   line-height: 1.5;
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
@@ -16,14 +16,10 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
-h1 {
-  font-family: 'Avenir-Bold';
-  font-size: 48px;
-}
 
 /* button:focus,
 button:focus-visible {

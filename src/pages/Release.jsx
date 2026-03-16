@@ -1,19 +1,26 @@
-import '../../scss/settingsPage.scss';
-import cn from 'classnames';
+import '../scss/settingsPage.scss';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import RadioButton from '../../components/radioButton';
-import Button from '../../components/Button';
-import { allFacs } from '../../config';
-import { getData, getRelease, getSettings, saveData, saveRelease } from '../../services/api';
-import { settingsFormatter } from '../../services/settingsFormatter';
+import {motion} from 'framer-motion'
+import RadioButton from '../components/radioButton';
+import Button from '../components/Button';
+import { allFacs } from '../config';
+import { getData, getRelease, getSettings, saveData, saveRelease } from '../services/api';
+import { settingsFormatter } from '../services/settingsFormatter';
+import Faculty from '../components/Faculty';
 
 const helpText = [
-        'Раунд не выбран',
-        'Сейчас 1 полуфинал',
-        'Сейчас 2 полуфинал',
-        'Сейчас финал'
-    ];
+    'Раунд не выбран',
+    'Сейчас 1 полуфинал',
+    'Сейчас 2 полуфинал',
+    'Сейчас финал'
+];
+
+// по двойному клику на еще не выпущенный факультет выпускать его (меняя очередь)
+// в релизе отправляем массив полной длины с выпущенными + нулл
+// очередь храним в релизе
+
+
 
 export default function Release() {  
     const [selectedRound, setSelectedRound] = useState(0);
@@ -22,75 +29,80 @@ export default function Release() {
     const [disableNext, setDisableNext] = useState(true);  
     
     const releaseFormatter = useCallback((rawSettings) => {
-        //console.log(222, `I releaseFormatter: setSelectedRound ${rawSettings.round} & setReleased ${rawSettings.released}`)
-        //console.log(rawSettings, selectedRound)
-        setSelectedRound(rawSettings.round)
-        setReleased(rawSettings.released)
-
-        // if (rawSettings.round) {
-        //     setSelectedRound(rawSettings.round)
-        //     setReleased(rawSettings.released)
-        // }
-        
+        rawSettings.round && setSelectedRound(rawSettings.round)
+        rawSettings.released && setReleased(rawSettings.released)
+        rawSettings.queue && setQueue(rawSettings.queue)
     }, [])
 
-    const setData = useCallback((rawSettings) => {
-        
-        //console.log(rawSettings, selectedRound)
-        const data = settingsFormatter(rawSettings, selectedRound)
-        //console.log(data)
-        //console.log('I setData with data', data, selectedRound)
-        setQueue(data.queue);
-        saveData(data);
-    }, [selectedRound])
+    // const setData = useCallback((rawSettings) => {
+    //     const data = settingsFormatter(rawSettings, selectedRound)
 
-    useEffect(() => {
-        console.log(released.length, queue.length, !selectedRound || released.length === queue.length)
-        setDisableNext(!selectedRound || released.length === queue.length)
-    }, [released, queue, selectedRound]);
+    //     setQueue(data.queue);
+    //     saveData(data);
+    // }, [selectedRound])
 
-    const syncReleaseData = useCallback((data) => {
-        //console.log(data.round, selectedRound)
-        //console.log(444, `I getData from server and check ${data.round} === ${selectedRound}`)
-        if (data.round === selectedRound) {
-            setQueue(data.queue);
+    const setDataAndQueue = useCallback((rawSettings) => {
+        const {queue, ...data} = settingsFormatter(rawSettings, selectedRound)
 
-            return;
-        }
-
-        // пересчитываем очередь
-        getSettings(setData);
+        setQueue(queue);
         setReleased([]);
-        //console.log('I saveRelease with', selectedRound)
         saveRelease({
+            queue: queue,
             released: [],
             round: selectedRound,
         });
 
-    }, [selectedRound, setData])
+        saveData(data);
+
+    }, [selectedRound])
 
     useEffect(() => {
-        //console.log(111, 'I getRelease from server')
+        setDisableNext(!selectedRound || released.length === queue.length)
+    }, [released, queue, selectedRound]);
+
+    const syncReleaseData = useCallback((data) => {
+        if (data.round === selectedRound) {
+            return;
+        }
+
+        getSettings(setDataAndQueue);
+    }, [selectedRound, setDataAndQueue])
+
+    // const syncReleaseQueueAndData = useCallback((data) => {
+    //     if (data.round === selectedRound) {
+    //         setQueue(data.queue);
+
+    //         return;
+    //     }
+
+    //     // пересчитываем очередь
+    //     getSettings(setData); // пересчитываем участников
+
+    //     setReleased([]); // очищаем выпущенных
+    //     saveRelease({
+    //         released: [],
+    //         round: selectedRound,
+    //     });
+
+    // }, [selectedRound, setData])
+
+    useEffect(() => {
         getRelease(releaseFormatter);
     }, [releaseFormatter]);
 
 
     useEffect(() => {
-        //console.log(333, 'I want to syncReleaseData, because selectedRound has changed', selectedRound)
-        //console.log('syncReleaseData', selectedRound)
         selectedRound && getData(syncReleaseData);
     }, [selectedRound, syncReleaseData]);
 
 
     const handleNext = () => {
-        //console.log(released.length, queue.length)
         if (released.length < queue.length) {
             const newReleased = [...released, queue[released.length]]
-            //console.log(newReleased.length, queue.length)
             setReleased(newReleased)
 
-            //console.log('I handleNext, saveRelease with released', newReleased, selectedRound)
             saveRelease({
+                queue: queue,
                 released: newReleased,
                 round: selectedRound,
             })
@@ -102,6 +114,7 @@ export default function Release() {
         newReleased.pop()
         setReleased(newReleased);
         saveRelease({
+            queue: queue,
             released: newReleased,
             round: selectedRound,
         })
@@ -111,7 +124,28 @@ export default function Release() {
     const handleResetAll = () => {
         setReleased([]);
         saveRelease({
+            queue: queue,
             released: [],
+            round: selectedRound,
+        })
+    }
+
+    const handleDoubleClick = (clickedFac) => {
+        if (released.includes(clickedFac)) {
+            console.log('Нельзя менять порядок уже выпущенных')
+            return;
+        }
+
+        const filteredQueue = queue.filter(fac => fac !== clickedFac);
+        const newReleased = released.concat([clickedFac])
+        const newQueue = newReleased.concat(filteredQueue.slice(released.length));
+        
+        setQueue(newQueue);
+        setReleased(newReleased);
+
+        saveRelease({
+            queue: newQueue,
+            released: newReleased,
             round: selectedRound,
         })
     }
@@ -139,13 +173,20 @@ export default function Release() {
                     />
                 </span>
             </div>
-            <div className='queueHeader'>
+            <div className='header queueHeader'>
                 <span>ожидают</span>
                 <span>выпущены</span>
             </div>
-            <div className='releaseContent'>
+            <div className='mainContent'>
                {queue.map((fac) => 
-                   <div key={fac} className={cn('facContainer', released.includes(fac) && 'released')}>{allFacs[fac].name}</div>
+                    <motion.div layout key={fac} transition={{ duration: 1 }}>
+                        <Faculty 
+                            key={fac} 
+                            facultyInfo={allFacs[fac]} 
+                            className={released.includes(fac) ? 'released' : ''}
+                            onDoubleClick={() => handleDoubleClick(fac)}
+                        />
+                    </motion.div>
                 )} 
             </div>
             

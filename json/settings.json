@@ -72,7 +72,7 @@
     },
     "inoz": {
       "semi": 1,
-      "isFinal": true,
+      "isFinal": false,
       "isParticipant": true,
       "scoreJudge": 0,
       "scoreAudience": 0
@@ -135,7 +135,7 @@
     },
     "arts": {
       "semi": 2,
-      "isFinal": true,
+      "isFinal": false,
       "isParticipant": true,
       "scoreJudge": 0,
       "scoreAudience": 0
@@ -149,7 +149,7 @@
     },
     "media": {
       "semi": 2,
-      "isFinal": false,
+      "isFinal": true,
       "isParticipant": true,
       "scoreJudge": 0,
       "scoreAudience": 0
@@ -177,7 +177,7 @@
     },
     "philos": {
       "semi": 2,
-      "isFinal": false,
+      "isFinal": true,
       "isParticipant": true,
       "scoreJudge": 0,
       "scoreAudience": 0

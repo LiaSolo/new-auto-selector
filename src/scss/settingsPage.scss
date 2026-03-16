@@ -1,41 +1,46 @@
 
 
 .settingsPage {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 16px 0;
+
     @include columnFlex;
     align-items: center;
-    box-sizing: border-box;
-    width: 100vw;
     justify-content: space-between;
-    padding: 16px 0;
+    
+    
+    font-size: $small;
+    color: rgb(122, 122, 122);
 }
 
 .mainContent {
     @include columnFlex;
+    box-sizing: border-box;
+    //width: $facultyRowWidth;
+    width: 642px;
+    height: 100%;
     overflow-y: auto;
 }
 
-.releaseContent {
-    @include columnFlex;
-    width: $facultyRowWidth;
-}
+// .releaseContent {
+//     @include columnFlex;
+//     width: $facultyRowWidth;
+// }
 
 .facContainer {
     @include baseContainer;
     width: 200px;
 }
 
-.released {
-    transition: all 1s;
-    transform: translateX(466px);
-}
-
-.header, .queueHeader {
+.header {
     @include baseFlexContainer;
-    @include smallFont;
     justify-content: space-between;
     padding-bottom: 16px;
     border-bottom: 1px solid white;
-    width: $facultyRowWidth;
+    //width: $facultyRowWidth;
+    width: 642px;
 }
 
 .queueHeader {
@@ -43,10 +48,10 @@
 }
 
 .contentHeader {
-    @include smallFont;
     display: grid;
-    grid-template-columns: 60px 200px 60px 90px 60px 116px;
-    gap: 16px;
+    grid-template-columns: 60px 200px 60px 90px 60px 108px;
+    width: 642px;
+    gap: 8px;
     align-items: center;
     text-align: center;
 }
@@ -56,10 +61,9 @@
     justify-content: space-between;
     padding-top: 16px;
     border-top: 1px solid white;
-    width: $facultyRowWidth;
+    //width: $facultyRowWidth;
+    width: 642px;
 }
-
-
 
 .hideCheckbox {
   display: flex;
@@ -76,4 +80,10 @@
 
 .flexContainer {
     @include baseFlexContainer;
+}
+
+/* Для Sortable */
+.sortable-chosen, .sortable-ghost {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
 }

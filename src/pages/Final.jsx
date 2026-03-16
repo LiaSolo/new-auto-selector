@@ -1,10 +1,10 @@
-import '../../scss/mainPage.scss';
-import {allFacs, backFinal, socketUrl} from "../../config";
+import '../scss/mainPage.scss';
+import {allFacs} from "../config";
 import {motion} from 'framer-motion'
 import {useEffect, useState} from "react";;
 import useWebSocket from "react-use-websocket";
-import Faculty from '../../components/Faculty';
-import { getData, getRelease } from '../../services/api';
+import Faculty from '../components/Faculty';
+import { getData, getRelease } from '../services/api';
 
 export default function Final() {
     const [finalists, setFinalists] = useState(null);
@@ -32,7 +32,6 @@ export default function Final() {
         );
         
         newData.sort((a, b) => b[1] - a[1]);
-        //console.log(newData)
         setFinsOrdered(newData)
     
     }, [finalists, released])
@@ -46,7 +45,6 @@ export default function Final() {
     // Ловим следующего показанного финалиста
     useEffect(() => {
         if (lastJsonMessage && lastJsonMessage.type === 'data-updated') {
-            //console.log(lastJsonMessage.data.released)
             const newReleased = lastJsonMessage.data.released; 
             setReleased(newReleased);
 

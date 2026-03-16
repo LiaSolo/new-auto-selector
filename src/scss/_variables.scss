@@ -5,18 +5,28 @@ $dark-green: darkslategray;
 $light-pink: rgb(193, 150, 157);
 $dark-pink: rgb(150, 90, 90);
 
-$blue: rgb(92, 125, 187);
+$blue: rgb(124, 143, 180);
 
 $light-gray: gray;
 $dark-gray: #242424;
 
+// faculty background color
+$faculty-participant: rgba(242, 219, 255, 0.8);
+$faculty-semi-winner: rgba(242, 219, 255, 1);
+$faculty-final: rgba(255, 255, 255, 0.8);
+$faculty-final-scored: rgb(227, 194, 247);
+
+// text color
+$light-text-color: $light-gray;
+$dark-text-color: rgb(79, 9, 136);
+
 // font-size
 $small: 12px;
-$standard: 16px;
+$normal: 16px;
+$medium: 28px;
+$large: 48px;
+$huge: 66px;
 
-// faculty background color
-$fill-bacground: rgb(255, 255, 255);
-$regular-bacrground: $fill-bacground 0.8;
-$draft-bacrground: $fill-bacground 0.5;
+
 
 //$facultyRowWidth: 666px;

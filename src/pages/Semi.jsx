@@ -1,34 +1,26 @@
-import '../../scss/mainPage.scss';
-import Faculty from "../../components/Faculty";
-import {allFacs, back, socketUrl} from "../../config";
+import '../scss/mainPage.scss';
+import Faculty from "../components/Faculty";
+import {allFacs} from "../config";
 import {useEffect, useState} from "react";
 import useWebSocket from "react-use-websocket";
-import { getData, getRelease } from '../../services/api';
+import { getData, getRelease } from '../services/api';
 ;
 
 export default function SemiFinal() {
     const [released, setReleased] = useState([]);
-    //const [loading, setLoading] = useState(true);
-    const [semi, setSemi] = useState(null);
+    const [parts, setParts] = useState([]);
 
-    // const fetchData = (rawData) => {
-    //     setReleased(rawData.released)
-    //     //setLoading(false)
-    // }
-    
     useEffect(() => {
-        getData(setSemi);
-        getRelease((data) => setReleased(data.released))
+        getData((data) => setParts(data.parts));
+        getRelease((data) => {
+            
+            setReleased([
+                ...data.released, 
+                ...Array(data.queue.length - data.released.length).fill(null)
+            ]);
+        })
     }, []);
 
-    // useEffect(() => {
-    //     console.log('semi', semi)
-    // }, [semi]);
-
-    // useEffect(() => {
-    //     console.log('released', released)
-
-    // }, [released]);
 
     const { lastJsonMessage } = useWebSocket('ws://localhost:3003', {
         onOpen: () => console.log('Соединение установлено'),
@@ -38,7 +30,8 @@ export default function SemiFinal() {
     // Ловим следующего показанного финалиста
     useEffect(() => {
         if (lastJsonMessage && lastJsonMessage.type === 'data-updated') {
-        setReleased(lastJsonMessage.data.released)
+            console.log(lastJsonMessage)
+        setReleased(lastJsonMessage.data)
         }
     }, [lastJsonMessage]);
 
@@ -49,7 +42,7 @@ export default function SemiFinal() {
                     <div className="video"/>
                     <div className="FacultyList">
                         {
-                            semi && semi.parts.map((fac) =>
+                            parts.map((fac) =>
                                 <Faculty 
                                     key={fac} 
                                     className={released.includes(fac) ? 'lowOpacity' : ''} 
@@ -62,13 +55,12 @@ export default function SemiFinal() {
                     <div className="winnersList">
                         <h1>Финалисты</h1>
                         {
-                            semi && semi.queue.map((fac) => {
-                                const isReleased = released.includes(fac);
+                            released.map((fac, index) => {
                                 return (
                                     <Faculty 
-                                        key={fac} 
-                                        className={isReleased ? "winnerReleased" : "lowOpacity"} 
-                                        facultyInfo={isReleased && allFacs[fac]}
+                                        key={index} 
+                                        className={fac ? "winnerReleased" : "lowOpacity"} 
+                                        facultyInfo={fac && allFacs[fac]}
                                     />
                                 )
                             })

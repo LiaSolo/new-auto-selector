@@ -12,6 +12,16 @@
   overflow: hidden;
 }
 
+h1 {
+    font-family: 'Avenir-Bold';
+    font-size: $huge;
+    color: white;
+    text-shadow: 
+        0 0 40px rgb(79, 9, 136),        
+        0 0 40px rgb(79, 9, 136),
+        0 0 40px rgb(79, 9, 136);
+}
+
 .right {
     @include baseColumn;
     max-width: 60%;
@@ -26,10 +36,14 @@
 }
 
 .winnersList, .FacultyPointList {
-  @include baseColumn;
-  flex-wrap: wrap;
-  gap: 16px;
-  max-height: 620px;
+    @include baseColumn;
+    flex-wrap: wrap;
+    gap: 16px;
+  
+}
+
+.FacultyPointList {
+    max-height: 620px;
 }
 
 .video {
@@ -44,16 +58,18 @@
 }
 
 .addedPoints {
-  font-size: 66px;
-  font-family: 'Avenir-Bold';
-  color: white;
-  background-color: rgb(201, 18, 18);
-  width: 200px;
-  height: 130px;
-  border-radius: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    place-items: center;
+    
+    width: 200px;
+    height: 130px;
+    
+    font-size: $huge;
+    font-family: 'Avenir-Bold';
+    color: white;
+
+    background-color: rgb(158, 18, 201);
+    border-radius: 30px;
 }
 
 .animatedPoints {

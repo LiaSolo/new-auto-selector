@@ -3,22 +3,27 @@
 .row {
     display: grid;
     grid-template-columns: 60px 200px 60px 90px 60px 50px 50px;
-    gap: 16px;
+    gap: 8px;
 }
 
 .nameContainer {
     @include baseContainer;
     width: 200px;
+    padding: 4px 0;
     cursor: grab;
 }
 
-.disabled {
-    opacity: 0.3;
+/* Для Sortable */
+.sortable-chosen, .sortable-ghost {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
 }
 
-// .hidden {
-//     visibility: hidden;
-// }
+
+.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
 
 .noDisplay {
     display: none;
