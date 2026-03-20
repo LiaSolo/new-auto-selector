@@ -30,7 +30,6 @@ export const settingsFormatter = (rawSettings, round) => {
 
     let queue = parts.filter(fac => facSettings[fac].isFinal)
     shuffleArray(queue)
-    console.log(queue)
 
     // final
     if (round === 3) {
@@ -47,15 +46,8 @@ export const settingsFormatter = (rawSettings, round) => {
             }}),
             {}
         );
-        //queue.sort((a, b) => parts[b].judge - parts[a].judge)
+
         queue = queue.toReversed();
-        
-        // parts = queue.map((fac) => ([fac, facSettings[fac].scoreJudge]));
-        // parts.sort((a, b) => b[1] - a[1]);
-
-        // queue = parts.toReversed().map(([fac,]) => ([fac, facSettings[fac].scoreAudience]));
-
-        
     }
 
     return ({

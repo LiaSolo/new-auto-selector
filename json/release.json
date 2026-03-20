@@ -1,16 +1,17 @@
 {
   "queue": [
     "politfuck",
-    "fmo",
-    "soc",
     "hsm",
-    "psych",
-    "studs"
+    "soc",
+    "studs",
+    "fmo",
+    "psych"
   ],
   "released": [
     "politfuck",
-    "fmo",
-    "soc"
+    "hsm",
+    "soc",
+    "studs"
   ],
   "round": 1
 }

@@ -2,10 +2,6 @@
     background-color: $dark-green;
 }
 
-// .primary:disabled {
-//     cursor: not-allowed;
-// }
-
 .primary__light {
     background-color: $light-green;
 }
@@ -23,6 +19,7 @@
 }
 
 button {
+    position: relative;
     padding: 12px 8px;
     border: 1px solid transparent;
     border-radius: 8px;

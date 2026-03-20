@@ -8,6 +8,8 @@ import { allFacs } from '../config';
 import { getSettings, saveData, saveRelease, saveSettings } from '../services/api';
 import { settingsFormatter } from '../services/settingsFormatter';
 import Button from '../components/Button';
+import cn from 'classnames';
+import summurizeServerResponse from '../services/summurizeServerResponse';
 
 const initSettings = {};
 Object.keys(allFacs).forEach((fac) => 
@@ -23,6 +25,7 @@ Object.keys(allFacs).forEach((fac) =>
 export default function Settings() {  
     const [selectedRound, setSelectedRound] = useState(0);
     const [lastWinner, setLastWinner] = useState('');
+    const [serverMessage, setServerMessage] = useState('');
     const [isHideCheckbox, setIsHideCheckbox] = useState(false);
     const [facSettings, setFacSettings] = useState(initSettings); 
     const [facOrder, setFacOrder] = useState(Object.keys(allFacs)); 
@@ -55,38 +58,68 @@ export default function Settings() {
         getSettings(fetchSettings)
     }, [fetchSettings]);
 
+    useEffect(() => {
+        console.log(serverMessage)
+        setTimeout(() => {serverMessage && setServerMessage('')}, 5000)
+    }, [serverMessage]);
+
     const updateOneFacOneSetting = (name, setting) => {
         // setting: {key: value}
         const newData = {...facSettings[name], ...setting}
         setFacSettings({...facSettings, [name]: newData})
     };
 
-    const handleSave = () => {
+    // const serverStatusHandler = (answers) => {
+    //     const isError = answers.some(ans => ans.status === 'error')
+    //     setServerMessage(isError ? 'error' : 'ok');
+    // }
+
+    const handleSave = async() => {
         const resultSettings = {
             facs: facOrder.reduce((res, fac) => ({...res, [fac]: facSettings[fac]}), {}),
             lastWinner: lastWinner,
         };
 
-        saveSettings(resultSettings)
-        saveRelease({
-            released: [],
-            round: selectedRound 
-        })
+        const {queue, ...data} = settingsFormatter(resultSettings, selectedRound);
 
-        const data = settingsFormatter(resultSettings, selectedRound)
-        saveData(data)
+        setServerMessage(await summurizeServerResponse(
+            saveSettings(resultSettings),
+            saveData(data),
+            saveRelease({
+                queue: queue,
+                released: [],
+                round: selectedRound, 
+            }),
+        ));
     }
 
-    const handleReset = () => {
+    const handleReset = async () => {
         setSelectedRound(0);
         setLastWinner('');
         setFacSettings(initSettings);
         setFacOrder(Object.keys(initSettings))
         setIsHideCheckbox(false);
 
-        saveSettings({});
-        saveRelease({});
-        saveData({});
+        // saveSettings({});
+        // saveRelease({});
+        // saveData({});
+
+        //const status = 
+
+        setServerMessage(await summurizeServerResponse(
+            saveSettings({}),
+            saveRelease({}),
+            saveData({}),
+        ));
+
+        // const answers = await Promise.all([
+        //     saveSettings({}),
+        //     saveRelease({}),
+        //     saveData({}),
+        // ]);
+
+        // const isError = answers.some(ans => ans.status === 'error')
+        // setServerMessage(isError ? 'error' : 'ok');
     }
 
     return (
@@ -152,12 +185,15 @@ export default function Settings() {
 
             <div className='footer'>
                 <Button type={'primary'} onClick={handleSave}>Сохранить</Button>
+                
                 <Button type={'secondary'} onClick={handleReset}>Сбросить всё на#уй</Button>
                 <Link to="release">
                     <Button type={'dangerous'}>К релизу</Button>
                 </Link>
             </div>
-            
+            {
+                serverMessage && <span className={cn('serverMessage', serverMessage)}>{serverMessage}</span>
+            }
 
         </div>
     )

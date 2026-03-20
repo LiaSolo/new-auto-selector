@@ -34,15 +34,15 @@ export async function getData(setData) {
 
 
 export async function saveData(newData) {
-  await save('data', newData)
+  return await save('data', newData)
 }
 
 export async function saveSettings(newSettings) {
-  await save('settings', newSettings)
+  return await save('settings', newSettings)
 }
 
 export async function saveRelease(newRelease) {
-  await save('release', newRelease)
+  return await save('release', newRelease)
 }
 
 // export async function getSettings(settings, setSettings) {

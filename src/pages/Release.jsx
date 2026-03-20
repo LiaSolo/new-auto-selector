@@ -8,6 +8,8 @@ import { allFacs } from '../config';
 import { getData, getRelease, getSettings, saveData, saveRelease } from '../services/api';
 import { settingsFormatter } from '../services/settingsFormatter';
 import Faculty from '../components/Faculty';
+import cn from 'classnames';
+import summurizeServerResponse from '../services/summurizeServerResponse';
 
 const helpText = [
     'Раунд не выбран',
@@ -16,17 +18,13 @@ const helpText = [
     'Сейчас финал'
 ];
 
-// по двойному клику на еще не выпущенный факультет выпускать его (меняя очередь)
-// в релизе отправляем массив полной длины с выпущенными + нулл
-// очередь храним в релизе
-
-
 
 export default function Release() {  
     const [selectedRound, setSelectedRound] = useState(0);
     const [queue, setQueue] = useState([]);
     const [released, setReleased] = useState([]);
-    const [disableNext, setDisableNext] = useState(true);  
+    const [disableNext, setDisableNext] = useState(true); 
+    const [serverMessage, setServerMessage] = useState(''); 
     
     const releaseFormatter = useCallback((rawSettings) => {
         rawSettings.round && setSelectedRound(rawSettings.round)
@@ -41,24 +39,31 @@ export default function Release() {
     //     saveData(data);
     // }, [selectedRound])
 
-    const setDataAndQueue = useCallback((rawSettings) => {
+    const setDataAndQueue = useCallback(async (rawSettings) => {
         const {queue, ...data} = settingsFormatter(rawSettings, selectedRound)
 
         setQueue(queue);
         setReleased([]);
-        saveRelease({
-            queue: queue,
-            released: [],
-            round: selectedRound,
-        });
 
-        saveData(data);
+        setServerMessage(await summurizeServerResponse(
+            saveRelease({
+                queue: queue,
+                released: [],
+                round: selectedRound,
+            }),
+            saveData(data),
+        ));
 
     }, [selectedRound])
 
     useEffect(() => {
         setDisableNext(!selectedRound || released.length === queue.length)
     }, [released, queue, selectedRound]);
+
+    useEffect(() => {
+        console.log(serverMessage)
+        setTimeout(() => {serverMessage && setServerMessage('')}, 5000)
+    }, [serverMessage]);
 
     const syncReleaseData = useCallback((data) => {
         if (data.round === selectedRound) {
@@ -96,41 +101,49 @@ export default function Release() {
     }, [selectedRound, syncReleaseData]);
 
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (released.length < queue.length) {
             const newReleased = [...released, queue[released.length]]
-            setReleased(newReleased)
+            setReleased(newReleased);
 
+            setServerMessage(await summurizeServerResponse(
+                saveRelease({
+                    queue: queue,
+                    released: newReleased,
+                    round: selectedRound,
+                }),
+            ));
+        }
+    }
+
+    const handleResetLast = async () => {
+        const newReleased = [...released]
+        newReleased.pop()
+        setReleased(newReleased);
+
+        setServerMessage(await summurizeServerResponse(
             saveRelease({
                 queue: queue,
                 released: newReleased,
                 round: selectedRound,
-            })
-        }
-    }
-
-    const handleResetLast = () => {
-        const newReleased = [...released]
-        newReleased.pop()
-        setReleased(newReleased);
-        saveRelease({
-            queue: queue,
-            released: newReleased,
-            round: selectedRound,
-        })
+            }),
+        ));
     }
 
 
-    const handleResetAll = () => {
+    const handleResetAll = async () => {
         setReleased([]);
-        saveRelease({
-            queue: queue,
-            released: [],
-            round: selectedRound,
-        })
+
+        setServerMessage(await summurizeServerResponse(
+            saveRelease({
+                queue: queue,
+                released: [],
+                round: selectedRound,
+            })
+        ));
     }
 
-    const handleDoubleClick = (clickedFac) => {
+    const handleDoubleClick = async  (clickedFac) => {
         if (released.includes(clickedFac)) {
             console.log('Нельзя менять порядок уже выпущенных')
             return;
@@ -143,11 +156,15 @@ export default function Release() {
         setQueue(newQueue);
         setReleased(newReleased);
 
-        saveRelease({
-            queue: newQueue,
-            released: newReleased,
-            round: selectedRound,
-        })
+        setServerMessage(await summurizeServerResponse(
+            saveRelease({
+                queue: newQueue,
+                released: newReleased,
+                round: selectedRound,
+            })
+        ));
+
+        
     }
 
     return (
@@ -205,7 +222,9 @@ export default function Release() {
                 </span>
                 
             </div>
-            
+            {
+                serverMessage && <span className={cn('serverMessage', serverMessage)}>{serverMessage}</span>
+            }
 
         </div>
     )
