@@ -1,17 +1,4 @@
 {
-  "parts": [
-    "studs",
-    "psych",
-    "vostok",
-    "soc",
-    "libarts",
-    "politfuck",
-    "chem",
-    "fmo",
-    "teo",
-    "hsm",
-    "inoz",
-    "hist"
-  ],
-  "round": 1
+  "parts": [],
+  "round": 0
 }
